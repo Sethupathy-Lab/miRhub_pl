@@ -2,3 +2,4 @@ completed_runs
 hsa_ppi_700_3col.txt
 python_conversion
 scorecard*
+.gitignore
