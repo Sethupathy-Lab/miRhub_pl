@@ -212,6 +212,7 @@ while (<GLIST>) {
       print "Warning discarding gene: $_ (no UTR found)\n";
    }
 }
+print "Genelist imported\n";
 close(GLIST);
 if (scalar(keys(%g0)) ==0) {
    print "ERROR no UTR found for any input gene: Are your gene symbols correct ?\n";
@@ -254,6 +255,7 @@ while(<PPIFILE>) {
       } # end else
    } #end if has a UTR
 }
+print "PPI import complete!\n";
 close(PPIFILE);
 
 
@@ -278,6 +280,7 @@ print OUT "\n";
 
 
 #Iterate generation and scoring of random graphs
+print "Entering Monte-Carlo simulation\n";
 for ($i=0; $i<$ITER; $i++) {
    %gI=(); #Random gene list
    %glistI=(); #Random node list (orig + neighbors)

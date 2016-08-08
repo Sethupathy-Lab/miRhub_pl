@@ -68,5 +68,5 @@ with open(tgtFile, 'r') as f, open(outFile, 'w') as fo:
                 utrLen = str(LenH[trans])
             except KeyError:
                 print "Error: missing", trans
-            line = '\t'.join([gene, trans, utrLen, miRgroup, siteType, pos, consList])
+            line = '\t'.join([gene.upper(), trans, utrLen, miRgroup, siteType, pos, consList])
             fo.write('{}\n'.format(line)) 

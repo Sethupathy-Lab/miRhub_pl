@@ -30,36 +30,36 @@ def parse_targetscan_by_species_ID(input, species):
         for l in f:
     # Parse target scan output line
             geneTrans, miRgroup, sID, msaS, msaE, \
-                    utrS, utrE, grpN, siteTy, miRinSpecies, grpTy, \
+                    utrS, utrE, grpN, siteType, miRinSpecies, grpTy, \
                     spInGrp, spInGrpWtype, ORF_overlap = l.split('\t')
     
-            msaKey = ':'.join([msaS, msaE])
-            posKey = ':'.join([utrS, utrE])
-            tgtKey = ':'.join([geneTrans, miRgroup])
+            msaKey = ':'.join([msaS, msaE])            #  Multiple-sequence alignment start and end joined
+            posKey = ':'.join([utrS, utrE])            #  Species-specific UTR start and stop coordinates
+            tgtKey = ':'.join([geneTrans, miRgroup])   #  Join gene name, transcript name, and miR
 
-            if tgtKey not in tgtSpList:
+            if tgtKey not in tgtSpList:                #  If tgtKey is not in tgtSpList, add it
                 tgtSpList[tgtKey] = {}
                 
    # If sites perfectly overlap, are contained, or encompass another site,
    # count all sites as the same location
             for msa_key in tgtSpList[tgtKey]:
-                kmsaS, kmsaE = msa_key.split(':')
-                kmsaS, kmsaE, msaS, msaE = map(int, [kmsaS, kmsaE, msaS, msaE])
+                kmsaS, kmsaE = msa_key.split(':')      #  Split dictionary msa key into start and stop  
+                kmsaS, kmsaE, msaS, msaE = map(int, [kmsaS, kmsaE, msaS, msaE])   # Convert to integer
                 if msaS >= kmsaS and kmsaE >= msaE or kmsaS >= msaS and msaE >= kmsaE:
                     msaKey = msa_key
-                    tgtSpList[tgtKey][msaKey].append(sID)
+                    tgtSpList[tgtKey][msaKey].append(sID)   # Add species to species list for that gene/location
                     break
             else:
-                tgtSpList[tgtKey][msaKey] = [sID]
+                tgtSpList[tgtKey][msaKey] = [sID]           # Gene/location not in tgtSpList, so add it
     
     # Only record target if in species of interest
-            if sID == species:
+            if sID == species:                              # If the species ID == species of interest
                 try:
-                    tgtUTR2MSA[tgtKey][posKey] = msaKey
-                    tgtSite[tgtKey][posKey] = siteTy
+                    tgtUTR2MSA[tgtKey][posKey] = msaKey     # Add the gene/miR/UTR position == gene/msa position dict
+                    tgtSite[tgtKey][posKey] = siteType      # Add the gene/miR/UTR position miR site type to dict
                 except KeyError:
                     tgtUTR2MSA[tgtKey] = {posKey : msaKey}
-                    tgtSite[tgtKey] = {posKey : siteTy}
+                    tgtSite[tgtKey] = {posKey : siteType}
     return tgtUTR2MSA, tgtSite, tgtSpList
 
 
@@ -67,12 +67,12 @@ def write_output(output, tgtUTR2MSA, tgtSite, tgtSpList):
     '''Write output to file, this is the near completed scorecard (needs UTR len)'''
     print 'Output saved as:', output
     with open(output, 'w') as f:
-        for tgtKey in tgtSite:
-            gene, trans, miRgroup = tgtKey.split(':')
-            for pos in tgtSite[tgtKey]:
-                msaKey = tgtUTR2MSA[tgtKey][pos]
+        for tgtKey in tgtSite:                        # for gene/miR
+            gene, trans, miRgroup = tgtKey.split(':') # split into parts
+            for pos in tgtSite[tgtKey]:               # for position in gene/mir/UTR position dict
+                msaKey = tgtUTR2MSA[tgtKey][pos]      # get the corresponding msa position
                 try:
-                    spList = ':'.join(tgtSpList[tgtKey][msaKey])
+                    spList = ':'.join(tgtSpList[tgtKey][msaKey]) # get the species that share that site
                 except KeyError:
                     print tgtKey, pos
     

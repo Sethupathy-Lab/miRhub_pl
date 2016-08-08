@@ -12,17 +12,16 @@ open(FILE,$file) or die;
 $header = <FILE>; # get miR list
 chomp($header);
 @hparts = split(/\t/,$header);
+
 $test=<FILE>; # get test scores
 chomp($test);
 @tparts = split(/\t/,$test);
-# good to here
 for ($i=1; $i < scalar(@hparts) ; $i++){ # calculate stats for test 
    $testH{$hparts[$i]} = $tparts[$i]; #hash score by miRNA name
    $randH{$hparts[$i]} = 1; #ititialze count to 1
    $s1H{$hparts[$i]} = 0; #init sum
    $s2H{$hparts[$i]} = 0; #init sum^2
 }
-# good to here
 $N=0;
 while(<FILE>) {
    chomp();
@@ -42,9 +41,6 @@ while(<FILE>) {
       }
    }
 }
-print "$_ $gL{$_}\n" for (keys %gL);
-#print "$_";
-exit;
 foreach $k (keys(%randH)) {
    push(@{$rLU{$randH{$k}}},$k);
 }
