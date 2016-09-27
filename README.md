@@ -36,7 +36,7 @@ A gene network is compiled using the input files for (1) the input gene list and
 
 For a gene network G(L,D,U): where L is the list of genes in the network, D is the number of high confidence protein-protein interactions that each gene has, and U is the ratio of the average 3’-UTR length in the input gene network over the average 3’-UTR length in the current gene network (note: this value is one when scoring the input gene network).
 
-
+```
 foreach miR_i in miRlist  having a conservation of at least C:
    foreach gene_j in L:
       foreach target site k of miR_i in gene_j:
@@ -59,7 +59,7 @@ where Pos_k is the position of target site k within the 3’-UTR of gene_j.
 
       Score_i += U*ScoreC_ij (1+α*log10(D_j))  
    Score_i=Score_i⁄(size(L))
-
+```
 
 ***
 
