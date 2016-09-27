@@ -39,7 +39,7 @@ For a gene network G(L,D,U):
     where L = list of genes in the network
           D = number of high confidence protein-protein interactions that each gene has
           U = ratio of the average 3'-UTR length in the input gene network over the average 3'-UTR length in the current gene network
-	       -Note: this value is 1 when scoring the input gene network
+               -Note: this value is 1 when scoring the input gene network
 	       
 foreach miR_i in miRlist having a conservation of at least C:
    foreach gene_j in L:
@@ -56,12 +56,12 @@ foreach miR_i in miRlist having a conservation of at least C:
       ScoreC_ij=ScoreB_ij0
       foreach additional target site k of miR_i in gene_j:
 			
-	 ScoreC_ij +={(0.5*ScoreB_ijk		if (Pos_k-Pos_(k-1))≤8
-		       1.5*ScoreB_ijk		if 8<(Pos_k-Pos_(k-1))<60
-		       ScoreB_ijk		if (Pos_k-Pos_(k-1))≥60)}
+          ScoreC_ij +={(0.5*ScoreB_ijk		if (Pos_k-Pos_(k-1))≤8
+                        1.5*ScoreB_ijk		if 8<(Pos_k-Pos_(k-1))<60
+                        ScoreB_ijk		if (Pos_k-Pos_(k-1))≥60)}
 where Pos_k is the position of target site k within the 3’-UTR of gene_j.
 
-      Score_i += U*ScoreC_ij (1+α*log10(D_j))  
+      Score_i += U * ScoreC_ij (1+α*log10(D_j))  
       Score_i=Score_i⁄(size(L))
 ```
 
